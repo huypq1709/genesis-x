@@ -38,8 +38,11 @@ export function DnaHelix3D() {
     // --- Scene / Camera ---
     const scene = new THREE.Scene();
     scene.fog = new THREE.Fog(BG, 16, 30);
-    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
-    camera.position.set(0, 0, 15);
+    // Camera FOV + distance chosen so the helix fills ~75% of the
+    // container's short axis, looking balanced on both 3:4 (portrait) and
+    // wider hero frames.
+    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 1000);
+    camera.position.set(0, 0, 16.5);
     // --- Image-based lighting for realistic reflections ---
     const pmrem = new THREE.PMREMGenerator(renderer);
     const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
@@ -187,14 +190,14 @@ export function DnaHelix3D() {
     };
   }, []);
   return (
-    <div className="relative w-full h-[460px] flex items-center justify-center">
+    <div className="relative w-full h-full flex items-center justify-center">
       {/* Ambient glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] bg-accent/15 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] bg-accent/15 rounded-full blur-[110px] pointer-events-none" />
       <div
         ref={mountRef}
         className="relative z-10 w-full h-full"
         aria-hidden="true" />
-      
+
     </div>);
 
 }

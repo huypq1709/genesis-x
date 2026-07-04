@@ -22,12 +22,12 @@ export function Hero() {
       <div className="absolute -top-32 -left-32 w-[480px] h-[480px] bg-[var(--accent-soft)] rounded-full blur-[120px] opacity-70 pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-[420px] h-[420px] bg-[var(--accent-soft)] rounded-full blur-[120px] opacity-60 pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 w-full grid lg:grid-cols-2 gap-12 items-center relative z-10">
+      <div className="max-w-7xl mx-auto px-6 w-full grid lg:grid-cols-12 gap-10 lg:gap-16 items-center relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="flex flex-col items-start">
+          className="lg:col-span-7 flex flex-col items-start">
 
           <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-white border border-[var(--border-color)] shadow-sm">
             <ShieldCheck className="w-4 h-4 text-[var(--accent)]" />
@@ -117,23 +117,25 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.3 }}
-          className="hidden lg:flex justify-center relative">
+          className="hidden lg:flex lg:col-span-5 justify-center relative self-stretch items-center">
 
           {/* FIX: Added a soft glass frame around the 3D helix so it reads as an
-              illustration/product image on the light background (Phu Minh feedback). */}
-          <div className="relative w-full">
+              illustration/product image on the light background (Phu Minh feedback).
+              Container is sized to match the visual weight of the left text column. */}
+          <div className="relative w-full max-w-[360px] aspect-[3/4] max-h-[520px]">
             <div className="absolute -inset-6 bg-gradient-to-br from-[var(--accent-soft)] to-transparent rounded-3xl blur-2xl opacity-80" />
-            <div className="relative rounded-3xl overflow-hidden border border-[var(--border-color)] bg-white/60 backdrop-blur-sm shadow-xl shadow-[var(--accent-glow)]">
+            <div className="relative w-full h-full rounded-3xl overflow-hidden border border-[var(--border-color)] bg-white/60 backdrop-blur-sm shadow-xl shadow-[var(--accent-glow)]">
               <DnaHelix3D />
             </div>
-            {/* Floating stat card — adds product illustration */}
+            {/* Floating stat card — adds product illustration.
+                Anchored to bottom-right so it never gets clipped on narrow viewports. */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.6 }}
-              className="absolute -bottom-6 -left-6 bg-white border border-[var(--border-color)] rounded-xl shadow-lg p-4 flex items-center gap-3"
+              className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 bg-white border border-[var(--border-color)] rounded-xl shadow-lg p-3 sm:p-4 flex items-center gap-3 max-w-[240px]"
             >
-              <div className="w-10 h-10 rounded-full bg-[var(--accent-soft)] flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-[var(--accent-soft)] flex items-center justify-center shrink-0">
                 <Sparkles className="w-5 h-5 text-[var(--accent)]" />
               </div>
               <div>
