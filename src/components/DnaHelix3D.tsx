@@ -22,8 +22,7 @@ export function DnaHelix3D() {
        the helix reads as a confident illustration, not a frosted overlay. */
     const ACCENT = 0x0e7490; // teal-700 — saturated cyan, holds on white
     const SECONDARY = 0x1e3a5f; // slate-800 — dark navy, real contrast
-    const BG = 0xf4f8fb; // matches section top gradient — strands fade into
-    // the page rather than card white, keeping "transparent" feel intact.
+    const BG = 0xffffff; // unused — kept for legacy; scene has no fog now
     const width = mount.clientWidth;
     const height = mount.clientHeight;
     // --- Renderer ---
@@ -35,14 +34,13 @@ export function DnaHelix3D() {
     renderer.setSize(width, height);
     renderer.setClearAlpha(0); // truly transparent canvas, no flash on load
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.95;
+    renderer.toneMappingExposure = 1.1; // slightly higher to offset removed fog
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     mount.appendChild(renderer.domElement);
     // --- Scene / Camera ---
     const scene = new THREE.Scene();
-    // Fog matched to the card background (white) so depth fades cleanly
-    // and the strands stay in focus across the full HEIGHT.
-    scene.fog = new THREE.Fog(BG, 18, 32);
+    // Removed scene.background / scene.fog so the canvas renders only the
+    // helix geometry over the transparent alpha channel.
     // Camera FOV + distance chosen so the helix fills ~75% of the
     // container's short axis, looking balanced on both 3:4 (portrait) and
     // wider hero frames.
@@ -198,10 +196,13 @@ export function DnaHelix3D() {
     };
   }, []);
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
+    <div
+      className="relative w-full h-full flex items-center justify-center bg-transparent"
+      style={{ background: 'transparent' }}>
       <div
         ref={mountRef}
         className="relative z-10 w-full h-full"
+        style={{ background: 'transparent' }}
         aria-hidden="true" />
 
     </div>);

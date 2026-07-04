@@ -123,10 +123,10 @@ export function Hero() {
               illustration/product image on the light background (Phu Minh feedback).
               Container is sized to match the visual weight of the left text column. */}
           <div className="relative w-full max-w-[360px] aspect-[3/4] max-h-[520px]">
-            {/* Helix container with transparent background — the section's own
-                gradient + grid backdrop shows through, so the 3D illustration
-                feels like it floats on the page rather than sitting in a card. */}
-            <div className="relative w-full h-full rounded-3xl overflow-hidden border border-[var(--border-color)]/60 bg-transparent shadow-xl shadow-[var(--accent-glow)]">
+            {/* Helix container with NO frame, NO shadow, NO background — the
+                canvas itself is transparent so the section gradient + grid
+                backdrop show through completely. */}
+            <div className="relative w-full h-full bg-transparent">
               <DnaHelix3D />
             </div>
             {/* Floating stat card — adds product illustration.
