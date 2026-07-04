@@ -19,7 +19,7 @@ import { Footer } from '../components/Footer';
    - Two audience tabs: Individual (1 person) and Enterprise (20 staff)
    - Each tab exposes 3 services: Fix/Cure, Add-on Simple, Add-on Xtreme
    - Add-on tiers deliver "Genetic powers" enhancements
-   - Prices are explicit and use dot-thousands notation ($1.999.999,99)
+   - Prices are explicit and use dot-thousands notation ($2.000.000,00)
    - Includes a transparent cost note (e.g. CRISPR-9 cost) and FAQs */
 
 /* ---------------- Types ---------------- */
@@ -60,7 +60,7 @@ const groups: Record<Audience, TierGroup> = {
       name: 'Fix / Cure',
       icon: Heart,
       tagline: 'Cure terminal illnesses & heal impossible wounds.',
-      price: '$1.999.999,99',
+      price: '$2.000.000,00',
       priceNote: '/ person · one-time',
       badge: 'Most critical',
       highlight: true,
@@ -77,7 +77,7 @@ const groups: Record<Audience, TierGroup> = {
       name: 'Add-on · Simple',
       icon: Sparkles,
       tagline: 'Entry-level genetic powers & enhancements.',
-      price: '$3.250.000,00',
+      price: '$3.500.000,00',
       priceNote: '/ person · one-time',
       features: [
       'All Fix / Cure benefits included',
@@ -92,7 +92,7 @@ const groups: Record<Audience, TierGroup> = {
       name: 'Add-on · Xtreme',
       icon: Zap,
       tagline: 'Full-stack genetic powers for the unrestricted evolver.',
-      price: '$4.999.999,99',
+      price: '$6.000.000,00',
       priceNote: '/ person · one-time',
       badge: 'Maximum power',
       features: [
@@ -135,7 +135,7 @@ const groups: Record<Audience, TierGroup> = {
       name: 'Add-on · Simple',
       icon: Sparkles,
       tagline: 'Baseline genetic powers, deployed at company scale.',
-      price: '$2.750.000,00',
+      price: '$3.000.000,00',
       priceNote: '/ person · one-time',
       features: [
       'All Fix / Cure benefits for the team',
@@ -150,7 +150,7 @@ const groups: Record<Audience, TierGroup> = {
       name: 'Add-on · Xtreme',
       icon: Zap,
       tagline: 'Full genetic-power suite for an entire organization.',
-      price: '$3.999.999,99',
+      price: '$5.000.000,00',
       priceNote: '/ person · one-time',
       badge: 'Maximum power',
       features: [

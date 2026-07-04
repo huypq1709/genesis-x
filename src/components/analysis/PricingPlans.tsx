@@ -42,7 +42,7 @@ const tierData: Record<Audience, Tier[]> = {
     id: 'fix',
     name: 'Fix / Cure',
     icon: Heart,
-    price: '$1.999.999,99',
+    price: '$2.000.000,00',
     tagline: 'Cure terminal illness & heal impossible wounds.',
     badge: 'Most critical',
     highlight: true,
@@ -58,7 +58,7 @@ const tierData: Record<Audience, Tier[]> = {
     id: 'simple',
     name: 'Add-on · Simple',
     icon: Sparkles,
-    price: '$3.250.000,00',
+    price: '$3.500.000,00',
     tagline: 'Baseline genetic powers.',
     features: [
     'All Fix / Cure benefits',
@@ -72,7 +72,7 @@ const tierData: Record<Audience, Tier[]> = {
     id: 'xtreme',
     name: 'Add-on · Xtreme',
     icon: Zap,
-    price: '$4.999.999,99',
+    price: '$6.000.000,00',
     tagline: 'Full genetic-power suite.',
     badge: 'Maximum power',
     features: [
@@ -106,7 +106,7 @@ const tierData: Record<Audience, Tier[]> = {
     id: 'simple',
     name: 'Add-on · Simple',
     icon: Sparkles,
-    price: '$2.750.000,00',
+    price: '$3.000.000,00',
     tagline: 'Baseline genetic powers, deployed at scale.',
     features: [
     'All Fix / Cure benefits for the team',
@@ -120,7 +120,7 @@ const tierData: Record<Audience, Tier[]> = {
     id: 'xtreme',
     name: 'Add-on · Xtreme',
     icon: Zap,
-    price: '$3.999.999,99',
+    price: '$5.000.000,00',
     tagline: 'Full genetic-power suite for the organization.',
     badge: 'Maximum power',
     features: [
