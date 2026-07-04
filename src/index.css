@@ -1,0 +1,57 @@
+/* @import url() FONT IMPORTS MUST ALWAYS BE AT THE VERY TOP OF THIS FILE, ABOVE THE TAILWIND IMPORTS — DO NOT DELETE THIS COMMENT */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+/* CRITICAL: THE FOLLOWING TAILWIND IMPORTS MUST NEVER BE DELETED OR REORDERED — DO NOT DELETE THIS COMMENT */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* END TAILWIND IMPORTS — ALL OTHER CSS MUST GO BELOW THIS LINE */
+
+@layer base {
+  /* FIX: Brightened theme — replaces near-black (#05070A) with a fresh
+     light base while preserving the cyan accent identity of the brand.
+     Addresses feedback: "interface too dark / needs to be brighter". */
+  :root {
+    --bg-base: #F4F8FB;
+    --bg-surface: #FFFFFF;
+    --bg-surface-hover: #EAF2F7;
+    --accent: #0EA5C7;
+    --accent-strong: #06768F;
+    --accent-glow: rgba(14, 165, 199, 0.18);
+    --accent-soft: #E0F4FA;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #64748B;
+    --border-color: #D6E2EA;
+    --border-strong: #94A3B8;
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+  }
+  body {
+    @apply bg-[var(--bg-base)] text-[var(--text-primary)] font-sans antialiased selection:bg-[var(--accent)] selection:text-white;
+    font-family: 'Inter', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 20px var(--accent-glow);
+  }
+  .border-glow {
+    box-shadow: 0 0 18px var(--accent-glow);
+  }
+  /* Subtle grid background for hero/feature sections — uses border tone. */
+  .bg-grid-soft {
+    background-image:
+      linear-gradient(to right, rgba(15, 23, 42, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(15, 23, 42, 0.06) 1px, transparent 1px);
+    background-size: 4rem 4rem;
+  }
+}
