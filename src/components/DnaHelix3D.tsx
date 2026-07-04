@@ -3,8 +3,12 @@ import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
+// Custom pass instead of OutputPass — stock OutputPass.sample2D ignores
+// alpha channel and forces gl_FragColor.a = 1.0, which makes the canvas
+// opaque (showing as a grey cast on light backgrounds). Our custom shader
+// preserves alpha end-to-end so the page background shows through.
 /**
  * A 3D animated DNA double-helix rendered with raw Three.js.
  * Uses physically-based materials, image-based lighting (RoomEnvironment),
@@ -166,7 +170,39 @@ export function DnaHelix3D() {
       0.85
     );
     composer.addPass(bloom);
-    composer.addPass(new OutputPass());
+    /* Custom output pass that preserves the alpha channel. Stock
+       OutputPass copies RGB but discards alpha → canvas becomes opaque
+       grey. This ShaderPass passes alpha through unchanged so the page
+       background remains visible everywhere we don't draw geometry. */
+    const TransparentOutputShader = {
+      uniforms: {
+        tDiffuse: { value: null }
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }`,
+      fragmentShader: `
+        uniform sampler2D tDiffuse;
+        varying vec2 vUv;
+        // Convert linear RGB from the post-FX buffer to sRGB so it matches
+        // what the renderer normally outputs to the canvas. Alpha is preserved
+        // untouched so transparent pixels stay transparent.
+        vec3 linearToSrgb(vec3 c) {
+          return mix(
+            12.92 * c,
+            1.055 * pow(c, vec3(1.0 / 2.4)) - 0.055,
+            step(0.0031308, c)
+          );
+        }
+        void main() {
+          vec4 col = texture2D(tDiffuse, vUv);
+          gl_FragColor = vec4(linearToSrgb(col.rgb), col.a);
+        }`
+    };
+    composer.addPass(new ShaderPass(TransparentOutputShader));
     // --- Animation loop ---
     let frameId = 0;
     const clock = new THREE.Clock();
