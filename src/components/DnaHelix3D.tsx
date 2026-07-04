@@ -197,10 +197,9 @@ export function DnaHelix3D() {
   }, []);
   return (
     <div className="relative w-full h-full flex items-center justify-center">
-      {/* Ambient glow */}
-      // Soft accent halo behind the helix — kept low-opacity so the
-    // canvas reads as white, just with a hint of brand glow at the core.
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] rounded-full blur-[110px] pointer-events-none" style={{ backgroundColor: 'rgba(14, 116, 144, 0.18)' }} />
+      {/* Soft accent halo behind the helix — kept low-opacity so the
+          canvas reads as white, just with a hint of brand glow at the core. */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] rounded-full blur-[110px] pointer-events-none" style={{ backgroundColor: 'rgba(14, 116, 144, 0.18)' }} />
       <div
         ref={mountRef}
         className="relative z-10 w-full h-full"
