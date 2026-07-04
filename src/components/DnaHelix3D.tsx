@@ -22,7 +22,8 @@ export function DnaHelix3D() {
        the helix reads as a confident illustration, not a frosted overlay. */
     const ACCENT = 0x0e7490; // teal-700 — saturated cyan, holds on white
     const SECONDARY = 0x1e3a5f; // slate-800 — dark navy, real contrast
-    const BG = 0xffffff; // matches card background so edges fade cleanly
+    const BG = 0xf4f8fb; // matches section top gradient — strands fade into
+    // the page rather than card white, keeping "transparent" feel intact.
     const width = mount.clientWidth;
     const height = mount.clientHeight;
     // --- Renderer ---
@@ -32,6 +33,7 @@ export function DnaHelix3D() {
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(width, height);
+    renderer.setClearAlpha(0); // truly transparent canvas, no flash on load
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 0.95;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -197,9 +199,6 @@ export function DnaHelix3D() {
   }, []);
   return (
     <div className="relative w-full h-full flex items-center justify-center">
-      {/* Soft accent halo behind the helix — kept low-opacity so the
-          canvas reads as white, just with a hint of brand glow at the core. */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] rounded-full blur-[110px] pointer-events-none" style={{ backgroundColor: 'rgba(14, 116, 144, 0.18)' }} />
       <div
         ref={mountRef}
         className="relative z-10 w-full h-full"
