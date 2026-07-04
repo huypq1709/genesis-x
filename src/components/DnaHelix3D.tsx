@@ -16,12 +16,13 @@ export function DnaHelix3D() {
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
-    /* FIX: Updated accent + background to match the new bright theme
-       (#0EA5C7 accent on a light page). Slightly reduces emissive to
-       keep the helix readable on white. */
-    const ACCENT = 0x0ea5c7;
-    const SECONDARY = 0x6b7c93;
-    const BG = 0xf4f8fb;
+    /* FIX: Repalette for WHITE/light backgrounds — strands need real contrast
+       or they wash out. Deep teal (instead of pastel cyan) for the accent
+       strand, deep slate for the secondary strand, and stronger rungs so
+       the helix reads as a confident illustration, not a frosted overlay. */
+    const ACCENT = 0x0e7490; // teal-700 — saturated cyan, holds on white
+    const SECONDARY = 0x1e3a5f; // slate-800 — dark navy, real contrast
+    const BG = 0xffffff; // matches card background so edges fade cleanly
     const width = mount.clientWidth;
     const height = mount.clientHeight;
     // --- Renderer ---
@@ -32,12 +33,14 @@ export function DnaHelix3D() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(width, height);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
+    renderer.toneMappingExposure = 0.95;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     mount.appendChild(renderer.domElement);
     // --- Scene / Camera ---
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(BG, 16, 30);
+    // Fog matched to the card background (white) so depth fades cleanly
+    // and the strands stay in focus across the full HEIGHT.
+    scene.fog = new THREE.Fog(BG, 18, 32);
     // Camera FOV + distance chosen so the helix fills ~75% of the
     // container's short axis, looking balanced on both 3:4 (portrait) and
     // wider hero frames.
@@ -66,39 +69,41 @@ export function DnaHelix3D() {
     const HEIGHT = 13;
     const sphereGeo = new THREE.SphereGeometry(1, 48, 48);
     const rungGeo = new THREE.CylinderGeometry(0.05, 0.05, 1, 16);
-    // Glossy cyan nucleotide — low emissive so it reads as a polished bead,
-    // not a flat self-lit ball. Clearcoat adds a wet, realistic sheen.
+    // Glossy teal nucleotide — higher metalness gives it a wet, polished
+    // look without needing strong emissive (which blew out on white).
     const accentMat = new THREE.MeshPhysicalMaterial({
       color: ACCENT,
-      metalness: 0.15,
-      roughness: 0.22,
+      metalness: 0.25,
+      roughness: 0.28,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.12,
+      clearcoatRoughness: 0.14,
       emissive: ACCENT,
-      emissiveIntensity: 0.08,
-      envMapIntensity: 1.2
+      emissiveIntensity: 0.04,
+      envMapIntensity: 1.1
     });
-    // Brushed-metal secondary strand for contrast/depth.
+    // Dark navy secondary strand — gives the helix its silhouette against
+    // a white card. Slightly less metallic so it doesn't compete with accent.
     const secondaryMat = new THREE.MeshPhysicalMaterial({
       color: SECONDARY,
-      metalness: 0.85,
-      roughness: 0.35,
-      clearcoat: 0.4,
-      clearcoatRoughness: 0.3,
+      metalness: 0.7,
+      roughness: 0.32,
+      clearcoat: 0.5,
+      clearcoatRoughness: 0.25,
       envMapIntensity: 1.0
     });
-    // Translucent glassy rung.
+    // Translucent teal rung — reads clearly on white thanks to a deeper
+    // base color and lower transmission.
     const rungMat = new THREE.MeshPhysicalMaterial({
-      color: 0xbfe9f5,
+      color: 0x7dd3d8, // slightly lighter than accent for visibility
       metalness: 0.0,
-      roughness: 0.1,
-      transmission: 0.6,
-      thickness: 0.5,
+      roughness: 0.18,
+      transmission: 0.35,
+      thickness: 0.4,
       transparent: true,
-      opacity: 0.7,
+      opacity: 0.85,
       emissive: ACCENT,
-      emissiveIntensity: 0.05,
-      envMapIntensity: 1.2
+      emissiveIntensity: 0.03,
+      envMapIntensity: 1.0
     });
     for (let i = 0; i < RUNGS; i++) {
       const t = i / (RUNGS - 1);
@@ -138,9 +143,10 @@ export function DnaHelix3D() {
     composer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     composer.setSize(width, height);
     composer.addPass(new RenderPass(scene, camera));
+    // Bloom is dialled down — on white we want crisp highlights, not haze.
     const bloom = new UnrealBloomPass(
       new THREE.Vector2(width, height),
-      0.4,
+      0.25,
       // strength
       0.5,
       // radius
@@ -192,7 +198,9 @@ export function DnaHelix3D() {
   return (
     <div className="relative w-full h-full flex items-center justify-center">
       {/* Ambient glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] bg-accent/15 rounded-full blur-[110px] pointer-events-none" />
+      // Soft accent halo behind the helix — kept low-opacity so the
+    // canvas reads as white, just with a hint of brand glow at the core.
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] rounded-full blur-[110px] pointer-events-none" style={{ backgroundColor: 'rgba(14, 116, 144, 0.18)' }} />
       <div
         ref={mountRef}
         className="relative z-10 w-full h-full"
