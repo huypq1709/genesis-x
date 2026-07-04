@@ -139,7 +139,20 @@ export function DnaHelix3D() {
     }
     helix.rotation.z = 0.16;
     // --- Post-processing: subtle bloom on the bright cyan highlights ---
-    const composer = new EffectComposer(renderer);
+    /* IMPORTANT: composer.render() pipelines into an internal framebuffer
+       that defaults to opaque clear (which produced the grey/silver cast
+       on the previously transparent canvas). Building a custom render
+       target with alpha: true makes EffectComposer's buffer transparent,
+       so the underlying page shows through end-to-end. */
+    const renderTarget = new THREE.WebGLRenderTarget(width, height, {
+      alpha: true,
+      premultiplyAlpha: false,
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.LinearFilter,
+      format: THREE.RGBAFormat,
+      type: THREE.UnsignedByteType
+    });
+    const composer = new EffectComposer(renderer, renderTarget);
     composer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     composer.setSize(width, height);
     composer.addPass(new RenderPass(scene, camera));
@@ -174,6 +187,7 @@ export function DnaHelix3D() {
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
       composer.setSize(w, h);
+      renderTarget.setSize(w, h);
     };
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(mount);
@@ -188,6 +202,7 @@ export function DnaHelix3D() {
       rungMat.dispose();
       envTex.dispose();
       pmrem.dispose();
+      renderTarget.dispose();
       composer.dispose();
       renderer.dispose();
       if (renderer.domElement.parentNode === mount) {
